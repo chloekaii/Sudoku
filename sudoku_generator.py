@@ -33,10 +33,8 @@ class SudokuGenerator:
                 return False
         return True
 
-    def valid_in_box(self, row_start, col_start, num):  # checks each column in the box
+    def valid_in_box(self, row_start, col_start, num):
         for i in range(row_start, row_start + 3):
-            if num == self.board[i][col_start]:
-                return False
             for j in range(col_start, col_start + 3):
                 if num == self.board[i][j]:
                     return False
