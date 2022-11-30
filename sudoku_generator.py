@@ -33,14 +33,14 @@ class SudokuGenerator:
                 return False
         return True
 
-  def valid_in_box(self, row_start, col_start, num):  # checks each column in the box
-    for i in range(row_start, row_start + 3):
-      if num == self.board[i][col_start]:
-        return False
-      for j in range(col_start, col_start + 3):
-        if num == self.board[i][j]:
-          return False
-    return True
+    def valid_in_box(self, row_start, col_start, num):  # checks each column in the box
+        for i in range(row_start, row_start + 3):
+            if num == self.board[i][col_start]:
+                return False
+            for j in range(col_start, col_start + 3):
+                if num == self.board[i][j]:
+                    return False
+        return True
 
     def is_valid(self, row, col, num):
         col_isvalid = self.valid_in_col(col, num)
@@ -51,17 +51,17 @@ class SudokuGenerator:
         else:
             return False
 
-  def fill_box(self, row_start, col_start):
-    num_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
-    for i in range(0, 3):
-      for j in range(0, 3):
-        num = random.choice(num_list)
-        if self.valid_in_box(row_start, col_start, num):
-          self.board[row_start + i][col_start + j] = num
-        else:
-          num_list.remove(num)
-          num = random.choice(num_list)
-          self.board[row_start + i][col_start + j] = num
+    def fill_box(self, row_start, col_start):
+        num_list = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+        for i in range(0, 3):
+            for j in range(0, 3):
+                num = random.choice(num_list)
+                if self.valid_in_box(row_start, col_start, num):
+                    self.board[row_start + i][col_start + j] = num
+                    num_list.remove(num)
+                else:
+                    num = random.choice(num_list)
+                    self.board[row_start + i][col_start + j] = num
 
     def fill_diagonal(self):
         self.fill_box(0, 0)
