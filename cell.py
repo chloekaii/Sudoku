@@ -9,8 +9,8 @@ scale=1
 WW=270
 WH=270
 #Cell size:
-cw=WW*scale/9
-ch=WH*scale/9
+cw=30
+ch=30
 #white color
 
 white = (255, 255, 255)
@@ -27,7 +27,8 @@ class Cell:
     self.row = row
     self.col = col
     self.screen=screen
-    self.sketched_value=0  
+    self.sketched_value=0
+    self.selected=0  
   def set_cell_value(self, value):  
     # Setter for this cell’s value  
     self.value = value
@@ -35,6 +36,7 @@ class Cell:
   def set_sketched_value(self, value): 
     # Setter for this cell’s sketched value  
     self.sketched_value = value
+    
  
   def draw(self):
     # Draws this cell, along with the value inside it.  
@@ -42,25 +44,31 @@ class Cell:
     # Otherwise, no value is displayed in the cell.  
     # The cell is outlined red if it is currently selected.  
     pygame.init()
+    
     font = pygame.font.Font(None, 24)
-    #draw lines later
-
     if self.sketched_value != 0:
-      number_color = grey
+      number_color = green
+      numberimage = font.render(str(self.sketched_value), False, number_color)
+      numberrect=numberimage.get_rect()
+      numberrect.topleft=(self.col*30, self.row*30)
+      # copy numberimage to screen at location decided by value in tuple (row, col)
+      self.screen.blit(numberimage, numberrect)
     else:
       number_color = black
-    
-    pygame.draw.line(self.screen, grey, (self.col, self.row), (self.col + cw, self.row))
-    pygame.draw.line(self.screen, grey, (self.col, self.row), (self.col, self.row + ch))
-    pygame.draw.line(self.screen, grey, (self.col + cw, self.row), (self.col + cw, self.row + ch))
-    pygame.draw.line(self.screen, grey, (self.col, self.row + ch), (self.col + cw, self.row + ch))
-    
-    # bind the number/value with a display image numberimage
-    # True just means not to Cap the initial letter
-    numberimage = font.render(str(self.value), True, number_color)
+      numberimage = font.render(str(self.value), False, number_color)
+      numberrect=numberimage.get_rect()
+      numberrect.topleft=(self.col*30 + 5, self.row*30 + 5)
     # copy numberimage to screen at location decided by value in tuple (row, col)
-    self.screen.blit(numberimage, (self.row + cw/4, self.col + ch/4))
-    #flip refresh the changed image in screen
-    pygame.display.flip()
+      self.screen.blit(numberimage, numberrect)
+    col = self.col
+    row = self.row
+    if self.selected == 1:
+       pygame.draw.line(self.screen, red, (col*ch, row*ch), (col*ch, row*cw + cw)) #horizontal
+       pygame.draw.line(self.screen, red, (col*ch + ch, row*ch), (col*ch + ch, row*cw + cw)) #horizontal
+       pygame.draw.line(self.screen, red, (col*ch, row*ch), (col*ch + ch, row*cw)) #virtical
+       pygame.draw.line(self.screen, red, (col*ch, row*ch + cw), (col*ch + ch, row*cw + cw)) #virtical
+       
+    pygame.display.update()
+    return
 
 
